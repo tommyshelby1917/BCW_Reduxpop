@@ -1,0 +1,51 @@
+.advertsList-main {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0 50px 0;
+}
+
+.advertList-item {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  background-color: #eee;
+  margin: 10px;
+  padding: 15px;
+}
+
+.advertList-item:hover {
+  transform: scale(0.9);
+  background-color: #ffbb00af;
+  transition: all 300ms;
+}
+
+.linktoadvert {
+  color: #212121;
+}
+
+.advertTitleContainer h2 {
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.advertSaleContainer h2 {
+  font-size: 15px;
+  background-color: var(--bluepop);
+  color: #fff;
+  font-weight: 300;
+  padding: 5px 0;
+}
+
+.advertPriceContainer h2 {
+  font-size: 15px;
+}
+
+.advertTagsContainer h2 {
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+  margin: 5px;
+  background-color: var(--yellowpop);
+}

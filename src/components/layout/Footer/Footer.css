@@ -1,0 +1,9 @@
+.main-footer {
+  background-color: var(--bluepop);
+  color: white;
+  padding: 30px;
+}
+
+.link-to-linkedin {
+  color: white !important;
+}

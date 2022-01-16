@@ -1,0 +1,44 @@
+.singleAdvert-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  margin: 75px 0;
+}
+
+.singleAdvert {
+  background-color: #eee;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 50%;
+  padding: 50px;
+}
+
+.advertSaleContainer h2 {
+  padding: 10px;
+}
+
+.advertTitleContainer h2 {
+  margin: 10px 0 0 0;
+}
+
+.advertPriceContainer {
+  margin: 0;
+}
+
+.advertTagsContainer {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.advertTagsContainer .tag {
+  background-color: var(--yellowpop);
+  margin: 0 5px;
+  padding: 5px;
+}
+
+.advertImageContainer {
+  margin-bottom: 30px;
+}

@@ -1,0 +1,9 @@
+.title-page {
+  background-color: var(--yellowpop);
+  padding: 20px;
+  margin: 0 0 50px 0;
+}
+
+.layout-main {
+  margin: 50px;
+}

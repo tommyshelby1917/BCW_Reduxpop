@@ -1,0 +1,5 @@
+.logout-button {
+  cursor: grab;
+  background-color: var(--yellowpop) !important;
+  color: var(--bluepop) !important;
+}

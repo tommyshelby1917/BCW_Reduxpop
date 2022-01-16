@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap');
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+:root {
+  --bluepop: #00285a;
+  --yellowpop: #ffbb00;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  margin-top: -22px;
+}
+
+.App {
+  text-align: center;
+}

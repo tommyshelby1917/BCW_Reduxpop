@@ -1,0 +1,31 @@
+.loginPage {
+  background-color: var(--yellowpop);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginpage-main-container {
+  background-color: var(--bluepop);
+  border-radius: 50%;
+  padding: 100px;
+  color: #fff;
+}
+
+.loginForm-field {
+  margin: 5px;
+}
+
+.loginForm-submit {
+  background-color: #fff !important;
+  color: var(--bluepop) !important;
+}
+
+.loginForm-submit:hover {
+  transform: scale(0.8);
+  transition: all 0.3s;
+}

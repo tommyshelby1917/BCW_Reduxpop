@@ -1,0 +1,28 @@
+.createNew-container {
+  background-color: #eee;
+  padding: 50px;
+  margin: 20px 0;
+}
+
+.filterAdvert-field {
+  padding: 5px 0;
+}
+
+.selectedtag {
+  background-color: var(--yellowpop);
+  margin-right: 5px;
+}
+
+.search-animate {
+  background-color: var(--yellowpop);
+  padding: 10px;
+  font-weight: 300;
+}
+
+.newAdvert-field {
+  margin: 10px 0;
+}
+
+.createpost-button {
+  margin-top: 30px !important;
+}

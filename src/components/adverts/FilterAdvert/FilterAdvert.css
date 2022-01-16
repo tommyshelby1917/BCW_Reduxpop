@@ -1,0 +1,34 @@
+.filteradvert-form-container {
+  background-color: #eee;
+  padding: 50px;
+  margin: 20px 0;
+}
+
+.selectedtags-container {
+  display: flex;
+  justify-content: center;
+}
+
+.selectedtags-container p {
+  padding: 10px;
+}
+
+.filterAdvert-field {
+  padding: 5px 0;
+}
+
+.selectedtag {
+  background-color: var(--yellowpop);
+  margin-right: 5px;
+}
+
+.search-animate {
+  background-color: var(--yellowpop);
+  padding: 10px;
+  font-weight: 300;
+}
+
+.advertTagsContainer {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,13 @@
+.header-container {
+  align-content: center;
+  align-items: center;
+  background-color: var(--bluepop);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.newpost-button {
+  background-color: #fff !important;
+  color: var(--bluepop) !important;
+}
