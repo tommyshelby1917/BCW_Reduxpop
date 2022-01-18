@@ -1,11 +1,13 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getLastestAdverts } from '../service';
-
 import Button from '../../common/Button/Button';
 import Layout from '../../layout/Layout';
 import FilterAdvert from '../FilterAdvert/FilterAdvert';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getAds } from '../../../store/selectors';
+import { loadAllAdverts } from '../../../store/actions';
 
 import './AdvertsPage.css';
 
@@ -19,13 +21,15 @@ const EmptyList = () => (
 );
 
 function AdvertsPage() {
-  const [adverts, setAdverts] = useState([]);
+  const dispatch = useDispatch();
+  const adverts = useSelector(getAds);
+
   const [showSearch, setShowSearch] = useState(false);
 
   // Esto es el ciclo de vida del componente. Cuando se arranca hacemos lo siguiente.
   useEffect(() => {
-    getLastestAdverts().then((adverts) => setAdverts(adverts));
-  }, []); // Como hay una array vacia, solo se arranca una vez
+    dispatch(loadAllAdverts());
+  }, [dispatch]); // Como hay una array vacia, solo se arranca una vez
 
   return (
     <Layout title="Adverts">

@@ -13,6 +13,7 @@ import './index.css';
 
 const accesToken = storage.get('auth');
 setAuthorizationHeader(accesToken);
+console.log('your saved token is...', accesToken);
 
 const history = createBrowserHistory();
 

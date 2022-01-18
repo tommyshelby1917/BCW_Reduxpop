@@ -10,6 +10,7 @@ export const login = (data) => {
   return client.post('api/auth/login', credentials).then(({ accessToken }) => {
     setAuthorizationHeader(accessToken);
     if (data.remember) {
+      console.log('saving your token...', accessToken);
       storage.set('auth', accessToken);
     }
   });

@@ -15,7 +15,7 @@ const api = { auth, adverts };
 const configureStore = (preloadedState, { history }) => {
   const middlewares = [
     routerMiddleware(history),
-    // to actions.js we send the object with the api && history
+    // to can use in actions.js we send the object with the api && history
     thunk.withExtraArgument({ api, history }),
   ];
 

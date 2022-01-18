@@ -5,44 +5,27 @@ import Layout from '../../layout/Layout';
 import Button from '../../common/Button/Button';
 import ConfirmAction from '../../common/ConfirmAction/ConfirmAction';
 
-import { getSingleAdvert, deletePostApi } from '../service';
+import { deletePostApi } from '../service';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { loadSingle } from '../../../store/actions';
+import { getSingle } from '../../../store/selectors';
 
 import './AdvertSingle.css';
 
 import noImage from '../../../public/images/noimage.jpeg';
 
-const useGetData = (getData) => {
-  const history = useHistory();
-  const [data, setData] = useState(null);
+function AdvertSingle() {
+  const { advertId } = useParams();
+
+  const dispatch = useDispatch();
+  const advert = useSelector(getSingle(advertId));
 
   useEffect(() => {
-    getData()
-      .then((data) => setData(data))
-      .catch((error) => {
-        if (error.status === 404) {
-          return history.push('/404');
-        }
-      });
+    dispatch(loadSingle(advertId));
+  }, [dispatch]);
 
-    return () => {};
-  }, [getData, history]);
-
-  return data;
-};
-
-const useAdvert = (advertId) => {
-  const fixedGetAdvert = useCallback(
-    () => getSingleAdvert(advertId),
-    [advertId]
-  );
-  const advert = useGetData(fixedGetAdvert);
-  return advert;
-};
-
-function AdvertSingle() {
   const history = useHistory();
-  const { advertId } = useParams();
-  const advert = useAdvert(advertId);
   const backend = process.env.REACT_APP_API_BASE_URL;
 
   const [displayConfirmation, setDisplayConfirmation] = useState(null);
