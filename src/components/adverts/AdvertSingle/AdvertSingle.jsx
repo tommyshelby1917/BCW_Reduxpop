@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useParams, useHistory } from 'react-router';
 
 import Layout from '../../layout/Layout';
@@ -8,24 +8,28 @@ import ConfirmAction from '../../common/ConfirmAction/ConfirmAction';
 import { deletePostApi } from '../service';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { loadSingle } from '../../../store/actions';
-import { getSingle } from '../../../store/selectors';
+import { loadSingle, deleteSingle } from '../../../store/actions';
+import { serveSingle, errorSingle } from '../../../store/selectors';
 
 import './AdvertSingle.css';
 
 import noImage from '../../../public/images/noimage.jpeg';
 
+// TODO: ¿Como implanto la redireccion al 404?
+
 function AdvertSingle() {
+  const history = useHistory();
   const { advertId } = useParams();
 
   const dispatch = useDispatch();
-  const advert = useSelector(getSingle(advertId));
+
+  const advert = useSelector(serveSingle);
+  const error = useSelector(errorSingle);
 
   useEffect(() => {
     dispatch(loadSingle(advertId));
-  }, [dispatch]);
+  }, [dispatch, advertId]);
 
-  const history = useHistory();
   const backend = process.env.REACT_APP_API_BASE_URL;
 
   const [displayConfirmation, setDisplayConfirmation] = useState(null);

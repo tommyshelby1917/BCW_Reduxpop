@@ -5,7 +5,9 @@ import {
   UI_RESET_ERROR,
   UI_SHOW_ERROR,
   ADS_LOADED_SUCCESS,
-  SINGLE_LOADED_SUCCES,
+  SINGLE_LOADED_SUCCESS,
+  SINGLE_LOADED_FAILED,
+  DELETE_SINGLE,
 } from './types';
 
 export const defaultState = {
@@ -13,6 +15,11 @@ export const defaultState = {
   ads: {
     loaded: false,
     data: [],
+  },
+  single: {
+    loaded: false,
+    data: [],
+    error: null,
   },
   ui: {
     isLoading: false,
@@ -37,6 +44,23 @@ export function ads(adsState = defaultState.ads, action) {
       return { loaded: true, data: action.payload };
     default:
       return adsState;
+  }
+}
+
+export function single(singleState = defaultState.single, action) {
+  switch (action.type) {
+    case SINGLE_LOADED_SUCCESS:
+      return {
+        ...singleState,
+        loaded: true,
+        data: action.payload,
+      };
+    case SINGLE_LOADED_FAILED:
+      return { ...singleState, error: action.payload };
+    case DELETE_SINGLE:
+      return singleState;
+    default:
+      return singleState;
   }
 }
 

@@ -29,7 +29,7 @@ function AdvertsPage() {
   // Esto es el ciclo de vida del componente. Cuando se arranca hacemos lo siguiente.
   useEffect(() => {
     dispatch(loadAllAdverts());
-  }, [dispatch]); // Como hay una array vacia, solo se arranca una vez
+  }, [dispatch]);
 
   return (
     <Layout title="Adverts">

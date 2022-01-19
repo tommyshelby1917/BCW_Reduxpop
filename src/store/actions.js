@@ -5,6 +5,9 @@ import {
   UI_SHOW_ERROR,
   UI_RESET_ERROR,
   ADS_LOADED_SUCCESS,
+  SINGLE_LOADED_SUCCESS,
+  SINGLE_LOADED_FAILED,
+  DELETE_SINGLE,
 } from './types';
 
 import { getSingle } from './selectors';
@@ -65,16 +68,18 @@ export function loadAllAdverts() {
 
 export function loadSingle(id) {
   return async function (dispatch, getState, { api, history }) {
+    dispatch(deleteSingle());
     try {
       let ad = getSingle(getState(), id);
       if (ad) {
-        return;
+        dispatch(singleLoaded(ad));
       } else {
         ad = await api.adverts.getSingleAdvert(id);
-        dispatch(adsLoaded(ad));
+        dispatch(singleLoaded(ad));
+        console.log('te doy el ad: ', ad);
       }
     } catch (error) {
-      dispatch(showError(error));
+      dispatch(singleFailed(error));
     }
   };
 }
@@ -83,6 +88,26 @@ export function adsLoaded(ads) {
   return {
     type: ADS_LOADED_SUCCESS,
     payload: ads,
+  };
+}
+
+export function singleLoaded(ad) {
+  return {
+    type: SINGLE_LOADED_SUCCESS,
+    payload: ad,
+  };
+}
+
+export function singleFailed(error) {
+  return {
+    type: SINGLE_LOADED_FAILED,
+    payload: error,
+  };
+}
+
+export function deleteSingle() {
+  return {
+    type: DELETE_SINGLE,
   };
 }
 
