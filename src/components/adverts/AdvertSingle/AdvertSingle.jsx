@@ -5,17 +5,13 @@ import Layout from '../../layout/Layout';
 import Button from '../../common/Button/Button';
 import ConfirmAction from '../../common/ConfirmAction/ConfirmAction';
 
-import { deletePostApi } from '../service';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { loadSingle, deleteSingle } from '../../../store/actions';
-import { serveSingle, errorSingle } from '../../../store/selectors';
+import { loadSingle, deleteAdvert } from '../../../store/actions';
+import { serveSingle } from '../../../store/selectors';
 
 import './AdvertSingle.css';
 
 import noImage from '../../../public/images/noimage.jpeg';
-
-// TODO: ¿Como implanto la redireccion al 404?
 
 function AdvertSingle() {
   const history = useHistory();
@@ -24,7 +20,6 @@ function AdvertSingle() {
   const dispatch = useDispatch();
 
   const advert = useSelector(serveSingle);
-  const error = useSelector(errorSingle);
 
   useEffect(() => {
     dispatch(loadSingle(advertId));
@@ -44,9 +39,8 @@ function AdvertSingle() {
     setDisplayConfirmation(false);
   };
 
-  const deletePost = async function () {
-    await deletePostApi(advertId);
-    return history.push('/adverts');
+  const deletePost = function () {
+    dispatch(deleteAdvert(advertId));
   };
 
   return (

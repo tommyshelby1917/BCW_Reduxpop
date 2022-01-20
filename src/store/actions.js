@@ -6,10 +6,9 @@ import {
   UI_RESET_ERROR,
   ADS_LOADED_SUCCESS,
   SINGLE_LOADED_SUCCESS,
-  SINGLE_LOADED_FAILED,
   DELETE_SINGLE,
+  COLLECTED_TAGS,
 } from './types';
-
 import { getSingle } from './selectors';
 
 // LOGIN AND LOGOUT ACTIONS
@@ -39,7 +38,9 @@ export function authLogin(credentials) {
     try {
       await api.auth.login(credentials);
       dispatch(authLoginSuccess());
-      const { from } = history.location.state || { from: { pathname: '/' } };
+      const { from } = history.location.state || {
+        from: { pathname: '/' },
+      };
       history.replace(from);
     } catch (error) {
       dispatch(showError(error));
@@ -69,17 +70,30 @@ export function loadAllAdverts() {
 export function loadSingle(id) {
   return async function (dispatch, getState, { api, history }) {
     dispatch(deleteSingle());
-    try {
-      let ad = getSingle(getState(), id);
-      if (ad) {
-        dispatch(singleLoaded(ad));
-      } else {
+    let ad = getSingle(getState(), id);
+    if (ad) {
+      dispatch(singleLoaded(ad));
+    } else {
+      try {
         ad = await api.adverts.getSingleAdvert(id);
         dispatch(singleLoaded(ad));
         console.log('te doy el ad: ', ad);
+      } catch (error) {
+        history.replace('/404');
       }
+    }
+  };
+}
+
+export function deleteAdvert(id) {
+  return async function (dispatch, getState, { api, history }) {
+    try {
+      const deleted = await api.adverts.deletePostApi(id);
+      history.replace('/');
+      console.log('An advert has been deleted: ', deleted);
+      dispatch(loadAllAdverts());
     } catch (error) {
-      dispatch(singleFailed(error));
+      console.log();
     }
   };
 }
@@ -98,16 +112,28 @@ export function singleLoaded(ad) {
   };
 }
 
-export function singleFailed(error) {
-  return {
-    type: SINGLE_LOADED_FAILED,
-    payload: error,
-  };
-}
-
 export function deleteSingle() {
   return {
     type: DELETE_SINGLE,
+  };
+}
+
+export function loadAllTags() {
+  return async function (dispatch, getState, { api, history }) {
+    try {
+      const tags = await api.adverts.requestTagsToAPI();
+      dispatch(collectedTags(tags));
+      console.log('tags loaded: ', tags);
+    } catch (error) {
+      console.log('Error getting tags: ', error);
+    }
+  };
+}
+
+export function collectedTags(tags) {
+  return {
+    type: COLLECTED_TAGS,
+    payload: tags,
   };
 }
 

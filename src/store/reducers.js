@@ -6,8 +6,8 @@ import {
   UI_SHOW_ERROR,
   ADS_LOADED_SUCCESS,
   SINGLE_LOADED_SUCCESS,
-  SINGLE_LOADED_FAILED,
   DELETE_SINGLE,
+  COLLECTED_TAGS,
 } from './types';
 
 export const defaultState = {
@@ -15,11 +15,11 @@ export const defaultState = {
   ads: {
     loaded: false,
     data: [],
+    tags: [],
   },
   single: {
     loaded: false,
     data: [],
-    error: null,
   },
   ui: {
     isLoading: false,
@@ -42,6 +42,8 @@ export function ads(adsState = defaultState.ads, action) {
   switch (action.type) {
     case ADS_LOADED_SUCCESS:
       return { loaded: true, data: action.payload };
+    case COLLECTED_TAGS:
+      return { ...adsState, tags: action.payload };
     default:
       return adsState;
   }
@@ -55,8 +57,6 @@ export function single(singleState = defaultState.single, action) {
         loaded: true,
         data: action.payload,
       };
-    case SINGLE_LOADED_FAILED:
-      return { ...singleState, error: action.payload };
     case DELETE_SINGLE:
       return singleState;
     default:
