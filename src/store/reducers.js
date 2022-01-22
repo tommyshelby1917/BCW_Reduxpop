@@ -1,12 +1,12 @@
 import {
-  AUTH_LOGIN_REQUEST,
+  LOADER_REQUEST,
+  LOADER_SUCCESS,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   UI_RESET_ERROR,
   UI_SHOW_ERROR,
   ADS_LOADED_SUCCESS,
   SINGLE_LOADED_SUCCESS,
-  DELETE_SINGLE,
   COLLECTED_TAGS,
 } from './types';
 
@@ -57,8 +57,6 @@ export function single(singleState = defaultState.single, action) {
         loaded: true,
         data: action.payload,
       };
-    case DELETE_SINGLE:
-      return singleState;
     default:
       return singleState;
   }
@@ -66,8 +64,10 @@ export function single(singleState = defaultState.single, action) {
 
 export function ui(uiState = defaultState.ui, action) {
   switch (action.type) {
-    case AUTH_LOGIN_REQUEST:
-      return { isLoading: true, error: null };
+    case LOADER_REQUEST:
+      return { ...uiState, isLoading: true };
+    case LOADER_SUCCESS:
+      return { isLoading: false, error: null };
     case UI_SHOW_ERROR:
       return { isLoading: false, error: action.payload };
     case UI_RESET_ERROR:

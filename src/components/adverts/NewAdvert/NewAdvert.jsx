@@ -1,7 +1,5 @@
 import React, { useState, Fragment } from 'react';
 import Layout from '../../layout/Layout';
-import { newPostApi } from '../service';
-import { Redirect, useHistory } from 'react-router';
 import ErrorMessage from '../../common/ErrorMessage/ErrorMessage';
 
 import Button from '../../common/Button/Button';
@@ -10,10 +8,13 @@ import SelectTags from '../../common/SelectTags/SelectTags';
 
 import './NewAdvert.css';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { newAdvert } from '../../../store/actions';
+import { getErrors } from '../../../store/selectors';
+
 function NewAdvert() {
-  const history = useHistory();
+  const dispatch = useDispatch();
   const formData = new FormData();
-  const [createdPostId, setCreatedPostId] = useState('');
 
   const [value, setValue] = useState({
     name: '',
@@ -22,7 +23,7 @@ function NewAdvert() {
     price: 0,
   });
 
-  const [error, setError] = useState(null);
+  const error = useSelector(getErrors);
 
   const handleChange = (event) => {
     setValue((prevState) => ({
@@ -58,23 +59,11 @@ function NewAdvert() {
       formData.append(key, valor);
     }
 
-    try {
-      const createdPost = await newPostApi(formData);
-      setCreatedPostId(createdPost.id);
-    } catch (error) {
-      if (error.status === 401) {
-        return history.push('/login');
-      }
-      setError(error.message);
-    }
+    dispatch(newAdvert(formData));
   };
 
   const validate =
     value.name !== '' && value.tags.length > 0 && value.price > 0;
-
-  if (createdPostId) {
-    return <Redirect to={`/adverts/${createdPostId}`} />;
-  }
 
   return (
     <Layout title="Do you want to create an advert?">

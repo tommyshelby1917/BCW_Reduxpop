@@ -26,6 +26,13 @@ function AdvertsPage() {
 
   const [showSearch, setShowSearch] = useState(false);
 
+  function hideSearch() {
+    setShowSearch(!showSearch);
+    if (showSearch) {
+      dispatch(loadAllAdverts());
+    }
+  }
+
   // Esto es el ciclo de vida del componente. Cuando se arranca hacemos lo siguiente.
   useEffect(() => {
     dispatch(loadAllAdverts());
@@ -36,7 +43,7 @@ function AdvertsPage() {
       <div className="advertsPage">
         {adverts.length ? (
           <>
-            <Button onClick={() => setShowSearch(!showSearch)}>
+            <Button onClick={hideSearch}>
               {!showSearch ? 'Search 🔎' : 'See all adverts'}
             </Button>
             <div className="advertsList-main">

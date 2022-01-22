@@ -1,20 +1,26 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-
-import { getFilteredAdverts } from '../service';
 
 import Button from '../../common/Button/Button';
 import FormField from '../../common/FormField/FormField';
 import SelectTags from '../../common/SelectTags/SelectTags';
 import ErrorMessage from '../../common/ErrorMessage/ErrorMessage';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { getAds, getErrors } from '../../../store/selectors';
+import { filterAdverts, iuResetError } from '../../../store/actions';
+
 import './FilterAdvert.css';
 
 function FilterAdvert() {
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const [adverts, setAdverts] = useState(null);
+  const error = useSelector(getErrors);
+  const [searched, setSearched] = useState(false);
+
+  const adverts = useSelector(getAds);
   const [value, setValue] = useState({
     name: '',
     sale: false,
@@ -22,9 +28,6 @@ function FilterAdvert() {
     priceMin: 0,
     priceMax: 0,
   });
-
-  const [searchUsed, setSearchUsed] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleChange = (event) => {
     setValue((prevState) => ({
@@ -85,21 +88,13 @@ function FilterAdvert() {
     params = `${params}${tagsParams}`;
 
     try {
-      const collectedAds = await getFilteredAdverts(params);
-      setAdverts(collectedAds);
-      if (collectedAds.length === 0) {
-        setAdverts(null);
-        if (!searchUsed) {
-          setSearchUsed(true);
-        }
-      } else {
-        setSearchUsed(false);
-      }
-    } catch (error) {
-      if (error.status === 401) {
-        return history.push('/login');
-      }
-      setError(error.message);
+      dispatch(filterAdverts(params));
+      setSearched(true);
+    } catch (err) {
+      console.log('me ha caido un errorazo!');
+      // if (err.status === 401) {
+      //   return history.push('/login');
+      // }
     }
   };
 
@@ -122,6 +117,7 @@ function FilterAdvert() {
             className="filterAdvert-field"
             value={value.name}
             onChange={handleChange}
+            required
           ></FormField>
           <FormField
             type="checkbox"
@@ -162,43 +158,44 @@ function FilterAdvert() {
         </form>
       </div>
       <div className="results-container">
-        {adverts ? (
-          <>
-            <div>Results: {adverts.length} founded</div>
-            <div className="advertsList-main">
-              {adverts.map(({ id, ...advert }) => (
-                <div key={id} className="advertList-item">
-                  <Link className="linktoadvert" to={`/adverts/${id}`}>
-                    <Fragment>
-                      <div className="advertSaleContainer">
-                        <h2>{advert.sale ? 'I want sell!' : 'I want buy!'}</h2>
-                      </div>
-                      <div className="advertTitleContainer">
-                        <h2>{advert.name}</h2>
-                      </div>
-                      <div className="advertPriceContainer">
-                        <h2>{advert.price}€</h2>
-                      </div>
-                      <div className="advertTagsContainer">
-                        {advert.tags.map((e) => <h2 key={e}>{e}</h2>) || (
-                          <p>This post doesn't have any tags</p>
-                        )}
-                      </div>
-                    </Fragment>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </>
+        {!error ? (
+          searched && (
+            <>
+              <div>Results: {adverts.length} founded</div>
+              <div className="advertsList-main">
+                {adverts.map(({ id, ...advert }) => (
+                  <div key={id} className="advertList-item">
+                    <Link className="linktoadvert" to={`/adverts/${id}`}>
+                      <Fragment>
+                        <div className="advertSaleContainer">
+                          <h2>
+                            {advert.sale ? 'I want sell!' : 'I want buy!'}
+                          </h2>
+                        </div>
+                        <div className="advertTitleContainer">
+                          <h2>{advert.name}</h2>
+                        </div>
+                        <div className="advertPriceContainer">
+                          <h2>{advert.price}€</h2>
+                        </div>
+                        <div className="advertTagsContainer">
+                          {advert.tags.map((e) => <h2 key={e}>{e}</h2>) || (
+                            <p>This post doesn't have any tags</p>
+                          )}
+                        </div>
+                      </Fragment>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </>
+          )
         ) : (
           <h2 className="search-animate">
-            {searchUsed
-              ? 'We dont found any advert. Try again!'
-              : 'Put your filters & search!'}
+            We dont found any advert. Try again!
           </h2>
         )}
       </div>
-      {error && <ErrorMessage error={error} />}
     </div>
   );
 }

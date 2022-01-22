@@ -1,4 +1,6 @@
 import {
+  LOADER_REQUEST,
+  LOADER_SUCCESS,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
@@ -6,7 +8,6 @@ import {
   UI_RESET_ERROR,
   ADS_LOADED_SUCCESS,
   SINGLE_LOADED_SUCCESS,
-  DELETE_SINGLE,
   COLLECTED_TAGS,
 } from './types';
 import { getSingle } from './selectors';
@@ -24,14 +25,6 @@ export function authLoginSuccess() {
   };
 }
 
-export function showError(error) {
-  return {
-    type: UI_SHOW_ERROR,
-    error: true,
-    payload: error,
-  };
-}
-
 export function authLogin(credentials) {
   return async function (dispatch, getState, { api, history }) {
     dispatch(authLoginRequest());
@@ -43,7 +36,7 @@ export function authLogin(credentials) {
       };
       history.replace(from);
     } catch (error) {
-      dispatch(showError(error));
+      dispatch(setError(error));
     }
   };
 }
@@ -60,16 +53,31 @@ export function loadAllAdverts() {
     try {
       const ads = await api.adverts.getLastestAdverts();
       dispatch(adsLoaded(ads));
-      console.log('ads loaded: ', ads);
     } catch (error) {
-      dispatch(showError(error));
+      dispatch(setError(error));
+    }
+  };
+}
+
+export function filterAdverts(filters) {
+  return async function (dispatch, getState, { api, history }) {
+    try {
+      const adverts = await api.adverts.getFilteredAdverts(filters);
+      if (adverts.length > 0) {
+        dispatch(adsLoaded(adverts));
+        dispatch(iuResetError());
+      } else {
+        throw new Error('No adverts founded!');
+      }
+    } catch (err) {
+      dispatch(setError(err));
     }
   };
 }
 
 export function loadSingle(id) {
   return async function (dispatch, getState, { api, history }) {
-    dispatch(deleteSingle());
+    dispatch(enableLoader());
     let ad = getSingle(getState(), id);
     if (ad) {
       dispatch(singleLoaded(ad));
@@ -77,11 +85,11 @@ export function loadSingle(id) {
       try {
         ad = await api.adverts.getSingleAdvert(id);
         dispatch(singleLoaded(ad));
-        console.log('te doy el ad: ', ad);
       } catch (error) {
         history.replace('/404');
       }
     }
+    dispatch(disableLoader());
   };
 }
 
@@ -93,7 +101,21 @@ export function deleteAdvert(id) {
       console.log('An advert has been deleted: ', deleted);
       dispatch(loadAllAdverts());
     } catch (error) {
-      console.log();
+      dispatch(setError(error));
+    }
+  };
+}
+
+export function newAdvert(ad) {
+  return async function (dispatch, getState, { api, history }) {
+    try {
+      const newAd = await api.adverts.newPostApi(ad);
+      history.replace(`/adverts/${newAd.id}`);
+    } catch (error) {
+      if (error.status === 401) {
+        return history.replace('/login');
+      }
+      dispatch(setError(error));
     }
   };
 }
@@ -112,20 +134,13 @@ export function singleLoaded(ad) {
   };
 }
 
-export function deleteSingle() {
-  return {
-    type: DELETE_SINGLE,
-  };
-}
-
 export function loadAllTags() {
   return async function (dispatch, getState, { api, history }) {
     try {
       const tags = await api.adverts.requestTagsToAPI();
       dispatch(collectedTags(tags));
-      console.log('tags loaded: ', tags);
     } catch (error) {
-      console.log('Error getting tags: ', error);
+      dispatch(setError(error));
     }
   };
 }
@@ -138,6 +153,25 @@ export function collectedTags(tags) {
 }
 
 // USER INTERFACE ACTIONS
+export function enableLoader() {
+  return {
+    type: LOADER_REQUEST,
+  };
+}
+
+export function disableLoader() {
+  return {
+    type: LOADER_SUCCESS,
+  };
+}
+
+export function setError(error) {
+  return {
+    type: UI_SHOW_ERROR,
+    payload: error,
+  };
+}
+
 export function iuResetError() {
   return {
     type: UI_RESET_ERROR,
