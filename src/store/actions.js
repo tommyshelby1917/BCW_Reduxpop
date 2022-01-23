@@ -54,6 +54,9 @@ export function loadAllAdverts() {
       const ads = await api.adverts.getLastestAdverts();
       dispatch(adsLoaded(ads));
     } catch (error) {
+      if (error.status === 401) {
+        history.replace('/login');
+      }
       dispatch(setError(error));
     }
   };
@@ -86,7 +89,11 @@ export function loadSingle(id) {
         ad = await api.adverts.getSingleAdvert(id);
         dispatch(singleLoaded(ad));
       } catch (error) {
-        history.replace('/404');
+        if (error.status === 401) {
+          history.replace('/login');
+        } else {
+          history.replace('/404');
+        }
       }
     }
     dispatch(disableLoader());

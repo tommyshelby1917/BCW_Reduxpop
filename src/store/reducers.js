@@ -23,7 +23,7 @@ export const defaultState = {
   },
   ui: {
     isLoading: false,
-    error: null,
+    error: {},
   },
 };
 

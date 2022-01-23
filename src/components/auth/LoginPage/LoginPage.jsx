@@ -10,7 +10,7 @@ import { getUi } from '../../../store/selectors';
 
 import './LoginPage.css';
 
-export function LoginPage({ onLogin, deleteError, error }) {
+export function LoginPage({ onLogin, error }) {
   const [value, setValue] = useState({
     email: '',
     password: '',
@@ -29,7 +29,6 @@ export function LoginPage({ onLogin, deleteError, error }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    deleteError();
     try {
       await onLogin(value);
     } catch (err) {
@@ -45,7 +44,7 @@ export function LoginPage({ onLogin, deleteError, error }) {
           <FormField
             type="email"
             name="email"
-            label="Email: "
+            label="Email"
             className="loginForm-field"
             value={value.email}
             onChange={handleChange}
@@ -54,7 +53,7 @@ export function LoginPage({ onLogin, deleteError, error }) {
           <FormField
             type="password"
             name="password"
-            label="Password: "
+            label="Password"
             className="loginForm-field"
             value={value.password}
             onChange={handleChange}
@@ -71,11 +70,7 @@ export function LoginPage({ onLogin, deleteError, error }) {
             Log in!!
           </Button>
         </form>
-        {error && (
-          <div onClick={deleteError} className="loginPage-error">
-            {error.message}
-          </div>
-        )}
+        {error && <div className="loginPage-error">{error.message}</div>}
       </div>
     </div>
   );
@@ -91,7 +86,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   onLogin: authLogin,
-  deleteError: iuResetError,
 };
 
 const ConnectedLoginPage = connect(

@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginPage snapshot 1`] = `
+<div>
+  <div
+    class="loginPage"
+  >
+    <div
+      class="loginpage-main-container"
+    >
+      <h1
+        class="loginPage-title"
+      >
+        Log in to ReactPop!
+      </h1>
+      <form
+        class="loginForm"
+      >
+        <div
+          class="formField formField--focused: loginForm-field"
+        >
+          <label
+            class="labelform"
+          >
+            <span>
+              Email
+            </span>
+            <input
+              autocomplete="off"
+              class="formField-input"
+              name="email"
+              type="email"
+              value=""
+            />
+          </label>
+        </div>
+        <div
+          class="formField loginForm-field"
+        >
+          <label
+            class="labelform"
+          >
+            <span>
+              Password
+            </span>
+            <input
+              autocomplete="off"
+              class="formField-input"
+              name="password"
+              type="password"
+              value=""
+            />
+          </label>
+        </div>
+        <div
+          class="formField loginForm-field"
+        >
+          <label
+            class="labelform"
+          >
+            <span>
+              Remember me
+            </span>
+            <input
+              autocomplete="off"
+              class="formField-input"
+              name="remember"
+              type="checkbox"
+              value="false"
+            />
+          </label>
+        </div>
+        <button
+          class="sc-bdvvtL iLUAWJ loginForm-submit"
+          type="submit"
+        >
+          Log in!!
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;

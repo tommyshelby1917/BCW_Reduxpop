@@ -21,7 +21,6 @@ function AdvertSingle() {
   const advert = useSelector(serveSingle);
 
   const loading = useSelector(getIsLoading);
-  console.log(loading);
 
   useEffect(() => {
     dispatch(loadSingle(advertId));

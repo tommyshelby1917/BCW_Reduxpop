@@ -6,7 +6,7 @@ import Layout from '../../layout/Layout';
 import FilterAdvert from '../FilterAdvert/FilterAdvert';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getAds } from '../../../store/selectors';
+import { getAds, getErrors } from '../../../store/selectors';
 import { loadAllAdverts } from '../../../store/actions';
 
 import './AdvertsPage.css';
