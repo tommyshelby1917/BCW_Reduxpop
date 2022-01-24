@@ -17,15 +17,22 @@ export function LoginPage({ onLogin, error }) {
     remember: false,
   });
 
-  const handleChange = (event) => {
+  const handleChange = ({ target: { value, name, type, checked } }) => {
     setValue((prevState) => ({
       ...prevState,
-      [event.target.name]:
-        event.target.type === 'checkbox'
-          ? event.target.checked
-          : event.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
+
+  // const handleChange = (event) => {
+  //   setValue((prevState) => ({
+  //     ...prevState,
+  //     [event.target.name]:
+  //       event.target.type === 'checkbox'
+  //         ? event.target.checked
+  //         : event.target.value,
+  //   }));
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -61,7 +68,7 @@ export function LoginPage({ onLogin, error }) {
           <FormField
             type="checkbox"
             name="remember"
-            label="Remember me"
+            label="Remember"
             className="loginForm-field"
             value={value.remember}
             onChange={handleChange}

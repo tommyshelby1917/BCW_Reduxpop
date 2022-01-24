@@ -7,11 +7,11 @@ describe('LoginPage', () => {
     expect(container).toMatchSnapshot();
   });
 
-  test('should call onLogin', () => {
+  test('should call onLogin', async () => {
     const onLogin = jest.fn().mockResolvedValue();
-    const email = 'josep@josep.com';
-    const password = '';
-    const remember = false;
+    const email = 'example@example.com';
+    const password = '1234';
+    const remember = true;
 
     const { getByLabelText, getByRole } = render(
       <LoginPage onLogin={onLogin} />
@@ -19,12 +19,15 @@ describe('LoginPage', () => {
 
     const emailField = getByLabelText(/Email/);
     const passwordField = getByLabelText(/Password/);
+    const rememberField = getByLabelText(/Remember/);
     const submitButton = getByRole('button');
 
-    fireEvent.change(emailField, { target: { value: email } });
     fireEvent.change(passwordField, { target: { value: password } });
+    fireEvent.change(emailField, { target: { value: email } });
+    fireEvent.click(rememberField, { target: { value: remember } });
 
     fireEvent.click(submitButton);
+
     expect(onLogin).toHaveBeenCalledWith({ email, password, remember });
   });
 });

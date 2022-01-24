@@ -59,7 +59,7 @@ exports[`LoginPage snapshot 1`] = `
             class="labelform"
           >
             <span>
-              Remember me
+              Remember
             </span>
             <input
               autocomplete="off"
